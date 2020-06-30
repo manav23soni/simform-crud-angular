@@ -1,0 +1,91 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-5">
+    </div>
+    <div class="col-md-5">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-md btn-danger" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+      <h2>Product List</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of productList">
+            <td>{{list.productName}}</td>
+            <td>{{list.type}}</td>
+            <td>{{list.description}}</td>
+            <td>
+              <button type="submit" class="btn btn-md btn-danger" (click)="deleteProduct(list.id)">
+                Delete
+              </button>
+              <button type="submit" class="btn btn-md btn-danger" (click)="editProduct(list.id, 'edit')">
+                Edit
+              </button>
+            </td>
+          </tr>
+          <tr class="text-center" *ngIf="productList.length === 0">
+            <td colspan="4">No Records Found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-3">
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-lg btn-outline-primary addProduct" (click)="open(mymodal)">Add Product</button>
+   
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Product Modal</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="productForm" (ngSubmit)="submitProductForm(productForm.value)">
+      <div class="form-group">
+        <label for="">Product Name *</label>
+        <input type="text" formControlName="productName" placeholder="Enter product name" class="form-control">
+        <p *ngIf="isSubmitted && !!productFormControls.productName.errors.required">
+          Please enter product name
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="">Type*</label>
+        <input type="text" class="form-control" formControlName="type" placeholder="Enter type">
+        <p *ngIf="productForm.get('type').invalid && isSubmitted && !!productFormControls.type.errors.required">
+          Please enter Type
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="">Description</label>
+        <textarea name="" class="form-control" id="" cols="30" rows="10" formControlName="description" placeholder="Enter description"></textarea>
+        <p *ngIf="productForm.get('description').invalid && isSubmitted && !!productFormControls.description.required">
+          Please enter description
+        </p>
+      </div>
+      <button type="submit" [disabled]="!productForm.valid" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</ng-template>

@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height:100vh">
+        <div class="col-6">
+            <h3 class="mt-2">Login Page</h3>
+            <br>
+            <form [formGroup]="signupForm" (ngSubmit)="submitSignupForm(signupForm.value)">
+                <div class="form-group">
+                    <label for="">Name *</label>
+                    <input type="text" formControlName="name" placeholder="Enter Name" class="form-control">
+                    <p
+                        *ngIf="signupForm.get('name').invalid && isSubmitted && !!signupFormControls.name.errors.required">
+                        Please enter name
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="">Email *</label>
+                    <input type="text" formControlName="email" placeholder="Enter Email" class="form-control">
+                    <p
+                        *ngIf="signupForm.get('email').invalid && isSubmitted && !!signupFormControls.email.errors.required">
+                        Please enter email
+                    </p>
+                    <p
+                        *ngIf="signupForm.get('email').invalid && !signupFormControls.email.errors.required && signupForm.get('email').touched">
+                        Please enter valid email
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="">Password*</label>
+                    <input type="password" class="form-control" formControlName="password" placeholder="Enter Password Ex: text@123">
+                    <p
+                        *ngIf="signupForm.get('password').invalid && isSubmitted && !!signupFormControls.password.errors.required">
+                        Please enter Password
+                    </p>
+                    <p
+                        *ngIf="signupForm.get('password').invalid && !signupFormControls.password.errors.required && signupForm.get('password').touched">
+                        Password should not be empty, minimum eight characters, one lowercase character, a number, and a special character
+                    </p>
+                </div>
+                <button type="submit" [disabled]="!signupForm.valid"
+                    class="btn btn-primary">SignUp</button>
+            </form>
+            If you already have account Please<a href="#" [routerLink]="['/login']"> Login</a>
+        </div>
+    </div>
+</div>
