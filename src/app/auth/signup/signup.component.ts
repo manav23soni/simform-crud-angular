@@ -35,6 +35,10 @@ export class SignupComponent implements OnInit {
 
   get signupFormControls() { return this.signupForm.controls; }
 
+  /**
+   * submitSignupForm() - signup request
+   * parameter - value (form data)
+   */
   async submitSignupForm(value) {
     try {
       this.isSubmitted = true;
@@ -43,7 +47,7 @@ export class SignupComponent implements OnInit {
       }
       const loginResult = await this.authService.signup(value);
       if (loginResult) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/routing']);
       }
     } catch (error) {
       console.log(error);

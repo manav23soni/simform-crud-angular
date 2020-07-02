@@ -35,6 +35,10 @@ export class LoginComponent implements OnInit {
 
   get loginFormControls() { return this.loginForm.controls; }
 
+  /**
+   * submitLoginForm() - Login request
+   * parameter - value (form data)
+   */
   async submitLoginForm(value) {
     try {
       this.isSubmitted = true;
@@ -43,7 +47,7 @@ export class LoginComponent implements OnInit {
       }
       const loginResult = await this.authService.login(value);
       if (loginResult) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/routing']);
       }
     } catch (error) {
     }

@@ -1,0 +1,127 @@
+
+
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <button type="submit" class="btn btn-md btn-danger" (click)="logout()">
+        Logout
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button class="btn btn-lg btn-outline-primary addProduct" (click)="open(mymodal)">Add Route</button>
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+      <h2>Route List</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Parameters</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let list of routeList">
+            <td>{{list.routeName}}</td>
+            <td>{{list.type}}</td>
+            <td><span *ngFor="let param of list.parameters">{{param.field}}, </span></td>
+            <td>
+              <button type="submit" class="btn btn-md btn-danger" (click)="deleteRoute(list.id)">
+                Delete
+              </button> &nbsp;  
+              <button type="submit" class="btn btn-md btn-danger" (click)="editRoute(list.id, 'edit')">
+                Edit
+              </button>
+            </td>
+          </tr>
+          <tr class="text-center" *ngIf="routeList.length === 0">
+            <td colspan="3">No Records Found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-3">
+    </div>
+  </div>
+</div>
+
+<!-- Route Model -->
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Route Modal</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="routeForm" (ngSubmit)="submitRouteForm(routeForm.value)">
+      <div class="form-group">
+        <label for="">Method *</label>
+        <select formControlName="type" class="form-control">
+          <option value="">Select </option>
+          <option  [value]="m.value" *ngFor="let m of methodsList">{{m.label}}</option>
+        </select>
+        <p *ngIf="routeForm.get('type').invalid && isSubmitted && !!routeFormControls.type.errors.required">
+          Please select method
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="">Route (URL) *(Text Only)</label>
+        <input type="text" name="" id="" class="form-control" formControlName="routeName" placeholder="Enter Route Ex: add-user, add-post">
+        <p *ngIf="routeForm.get('routeName').invalid && isSubmitted && !!routeFormControls.routeName.errors.required">
+          Please enter route
+        </p>
+        <p
+          *ngIf="routeForm.get('routeName').invalid && !routeFormControls.routeName.errors.required && routeForm.get('routeName').touched">
+          Please enter route
+        </p>
+      </div>
+      <div class="form-group">
+        <div formArrayName="parameters">
+          <div *ngFor="let para of routeParameterArrayForm.controls; let j = index;">
+            <div [formGroupName]="j">
+              <div>
+                <label>Parameter {{j + 1}}</label> &nbsp;
+                <button type="button" class="btn btn-sm btn-danger" *ngIf="routeParameterArrayForm.length > 1"
+                  (click)="removeRouteParameter(j)">
+                  Delete
+                </button>
+              </div>
+              <div class="form-group">
+                <!-- <label for="">Parameters </label> -->
+                <input type="text" name="" id="" class="form-control" formControlName="field"
+                  placeholder="Enter Parameter">
+                <p
+                  *ngIf="getRouteParameterFormGroup(j).controls['field'].invalid && isSubmitted && !!getRouteParameterFormGroup(j).controls['field'].errors.required">
+                  Please enter parameter
+                </p>
+                <p
+                  *ngIf="getRouteParameterFormGroup(j).controls['field'].invalid && !getRouteParameterFormGroup(j).controls['field'].errors.required && getRouteParameterFormGroup(j).controls['field'].touched">
+                  Please enter parameter
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" (click)="addRouteParameter()">
+          Add More
+        </button>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</ng-template>

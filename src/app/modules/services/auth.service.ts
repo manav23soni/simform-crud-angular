@@ -153,7 +153,88 @@ export class AuthService {
     });
   }
 
+  addRoute(route): any {
+    const token = JSON.parse(localStorage.getItem('token'));
+    this.helperService.showLoading();
+    return new Promise((resolve, reject) => {
+      this.appHttpService.postWithHeader('/', route, token)
+        .subscribe((res: any) => {
+          this.helperService.hideLoading();
+          this.helperService.showSuccessToast(res.message);
+          resolve(res.data);
+        }, (err) => {
+          this.helperService.hideLoading();
+          this.helperService.showErrorToast(err.error.error || 'Internal Server Error');
+          reject(err);
+        });
+    });
+  }
 
+  editRoute(route): any {
+    const token = JSON.parse(localStorage.getItem('token'));
+    this.helperService.showLoading();
+    return new Promise((resolve, reject) => {
+      this.appHttpService.putWithHeader('/', route, token)
+        .subscribe((res: any) => {
+          this.helperService.hideLoading();
+          this.helperService.showSuccessToast(res.message);
+          resolve(res);
+        }, (err) => {
+          this.helperService.hideLoading();
+          this.helperService.showErrorToast(err.error.error || 'Internal Server Error');
+          reject(err);
+        });
+    });
+  }
+
+  getRouteList(): any {
+    const token = JSON.parse(localStorage.getItem('token'));
+    this.helperService.showLoading();
+    return new Promise((resolve, reject) => {
+      this.appHttpService.getWithHeader('/getAll', token)
+        .subscribe((res: any) => {
+          this.helperService.hideLoading();
+          resolve(res.data);
+        }, (err) => {
+          this.helperService.hideLoading();
+          this.helperService.showErrorToast(err.error.error || 'Internal Server Error');
+          reject(err);
+        });
+    });
+  }
+
+  getByIdroute(routeId): any {
+    const token = JSON.parse(localStorage.getItem('token'));
+    this.helperService.showLoading();
+    return new Promise((resolve, reject) => {
+      this.appHttpService.getWithHeader('/getSingle/' + routeId, token)
+        .subscribe((res: any) => {
+          this.helperService.hideLoading();
+          resolve(res.data);
+        }, (err) => {
+          this.helperService.hideLoading();
+          this.helperService.showErrorToast(err.error.error || 'Internal Server Error');
+          reject(err);
+        });
+    });
+  }
+
+  deleteRoute(routeId): any {
+    const token = JSON.parse(localStorage.getItem('token'));
+    this.helperService.showLoading();
+    return new Promise((resolve, reject) => {
+      this.appHttpService.deleteWithHeader('/' + routeId,  token)
+        .subscribe((res: any) => {
+          this.helperService.hideLoading();
+          this.helperService.showSuccessToast(res.message);
+          resolve(res);
+        }, (err) => {
+          this.helperService.hideLoading();
+          this.helperService.showErrorToast(err.error.error || 'Internal Server Error');
+          reject(err);
+        });
+    });
+  }
 
   logout() {
     localStorage.clear();
